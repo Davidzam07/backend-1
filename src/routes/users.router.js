@@ -5,7 +5,7 @@ import { authJwt, authorizeRoles } from "../middlewares/auth.js";
 
 const router = Router();
 
-// Obtener todos los usuarios (solo admin)
+// obtener todos los usuarios (solo admin)
 router.get("/", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   try {
     const users = await UserModel.find().populate("cart");
@@ -15,7 +15,7 @@ router.get("/", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   }
 });
 
-// Obtener un usuario por ID (solo admin)
+// obtener un usuario por ID (solo admin)
 router.get("/:uid", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   try {
     const { uid } = req.params;
@@ -29,7 +29,7 @@ router.get("/:uid", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   }
 });
 
-// Crear usuario desde el panel (solo admin) - crea el hash de la contraseña
+// crear usuario desde el panel (solo admin)
 router.post("/", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   try {
     const { first_name, last_name, email, age, password, cart, role } = req.body;
@@ -61,13 +61,12 @@ router.post("/", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   }
 });
 
-// Actualizar usuario (solo admin)
+// actualizar usuario (solo admin)
 router.put("/:uid", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   try {
     const { uid } = req.params;
     const updateData = { ...req.body };
 
-    // Si viene password, se vuelve a hashear
     if (updateData.password) {
       updateData.password = createHash(updateData.password);
     }
@@ -87,7 +86,7 @@ router.put("/:uid", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   }
 });
 
-// Eliminar usuario (solo admin)
+// eliminar usuario (solo admin)
 router.delete("/:uid", authJwt, authorizeRoles(["admin"]), async (req, res) => {
   try {
     const { uid } = req.params;

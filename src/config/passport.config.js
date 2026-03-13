@@ -3,8 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { UserModel } from "../models/user.model.js";
 import { isValidPassword } from "../utils/crypto.js";
-
-const JWT_SECRET = process.env.JWT_SECRET || "secretJWTdesarrollo";
+import { env } from "./env.js";
 
 export const initializePassport = () => {
   // Estrategia Local para login por email/password
@@ -37,7 +36,7 @@ export const initializePassport = () => {
 
   const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: JWT_SECRET,
+    secretOrKey: env.jwtSecret,
   };
 
   // Estrategia JWT genérica para proteger rutas
